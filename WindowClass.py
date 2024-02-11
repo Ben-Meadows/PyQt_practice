@@ -1,14 +1,15 @@
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QLabel
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QLabel, QMainWindow, QMenuBar, QStatusBar, QFileDialog
 from PyQt6.QtGui import QAction,QIcon,QFont
 import sys
 
-class Window(QWidget):
+class Window(QMainWindow):
     
     def  __init__(self):
         super().__init__()
         self.setWindowTitle("Ben's PyQt window")
         self.setWindowIcon(QIcon("gt.png"))
         self.setGeometry(500,200,500,400)
+        self.create_menu_bar()
         
         self.create_widgets()
 
@@ -29,6 +30,34 @@ class Window(QWidget):
     def clicked_btn(self):
         self.label.setText("text has changed")
         self.label.setStyleSheet('background color:red')
+        
+        
+    
+
+    def create_menu_bar(self):
+        menu_bar = self.menuBar()  # Create the menu bar
+
+        # Create menus
+        file_menu = menu_bar.addMenu("File")
+        edit_menu = menu_bar.addMenu("Edit")
+        settings_menu = menu_bar.addMenu("Settings")
+        
+
+        # Create actions for the File menu
+        exit_action = QAction("Exit", self)
+        exit_action.triggered.connect(self.close)
+        file_menu.addAction(exit_action)
+        
+        open_action = QAction("&Open CSV", self)
+        open_action.triggered.connect(self.open_csv_file)
+        file_menu.addAction(open_action)
+        
+    def open_csv_file(self):
+        file_name, _ = QFileDialog.getOpenFileName(self, "Open CSV File", "", "CSV Files (*.csv)")
+        if file_name:
+            print(file_name)  # Here you will process the CSV file
+
+
         
         
         
